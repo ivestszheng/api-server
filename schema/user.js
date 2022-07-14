@@ -1,7 +1,7 @@
 /*
  * @Descripttion: 用户信息校验模块
  * @Date: 2022-07-14 13:10:47
- * @LastEditTime: 2022-07-14 14:01:58
+ * @LastEditTime: 2022-07-14 16:26:30
  */
 // 导入定义验证规则的包
 const joi = require('joi')
@@ -15,5 +15,19 @@ exports.reg_login_schema = {
     body: {
         username,
         password
+    }
+}
+
+// 定义 id, nickname, email 的验证规则
+const id = joi.number().integer().min(1).required()
+const nickname = joi.string().required()
+const email = joi.string().email().required()
+
+exports.update_userinfo_schema = {
+    // 需要对 req.body 里面的数据进行验证
+    body: {
+        id,
+        nickname,
+        email
     }
 }

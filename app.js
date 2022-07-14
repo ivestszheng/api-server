@@ -1,10 +1,15 @@
+// @ts-nocheck
 /*
- * @Descripttion: 
+ * @Descripttion: 入口文件
  * @Date: 2022-07-13 16:08:45
- * @LastEditTime: 2022-07-13 16:31:07
+ * @LastEditTime: 2022-07-14 13:33:27
  */
 const express = require('express');
 const app = express()
+const joi = require('joi')
+
+const HOSTNAME = '127.0.0.1'
+const PORT = 3007
 
 const cors = require('cors');
 app.use(cors())
@@ -12,10 +17,32 @@ app.use(cors())
 // 配置解析表单数据的中间件；注意：这个中间件，只能解析 application/x-www-form-urlencoded 格式的表单数据
 app.use(express.urlencoded({ extended: false }))
 
+// 一定要在路由之前，封装 res.cc 函数
+app.use((req, res, next) => {
+    // status 默认值为 1，表示失败的情况
+    // err 的值，可能是一个错误对象，也可能是一个错误的描述字符串
+    res.cc = (err, status = 1) => {
+        res.send({
+            status,
+            // 检测是不是 Error 对象的实例，如果不是则直接返回 err 字符串
+            message: err instanceof Error ? err.message : err
+        })
+    }
+    next()
+})
+
 // 导入并使用用户模块
 const userRouter = require('./router/user')
-app.use('/api',userRouter)
+app.use('/api', userRouter)
 
-app.listen(3007, () => {
-    console.log('api server running at http://127.0.0.1:3007');
+// 定义错误级别的中间件
+app.use((err, req, res, next) => {
+    // 验证失败导致的错误
+    if (err instanceof joi.ValidationError) return res.cc(err)
+    // 未知的错误
+    res.cc(err)
+})
+
+app.listen(PORT, () => {
+    console.log(`api server running at http://${HOSTNAME}:${PORT}`);
 })

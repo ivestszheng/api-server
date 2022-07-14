@@ -1,7 +1,7 @@
 /*
  * @Descripttion: 路由 - 用户模块 
  * @Date: 2022-07-13 16:21:35
- * @LastEditTime: 2022-07-14 13:19:51
+ * @LastEditTime: 2022-07-14 13:55:19
  */
 const express = require('express')
 const router = express.Router();
@@ -13,7 +13,6 @@ const { regUser, login } = require('../router_handler/user')
 const expressJoi = require('@escook/express-joi')
 // 导入需要的验证规则对象
 const { reg_login_schema } = require('../schema/user');
-const { application } = require('express');
 
 // 注册新用户
 router.post('/reguser',expressJoi(reg_login_schema), regUser)

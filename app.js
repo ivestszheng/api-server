@@ -2,14 +2,12 @@
 /*
  * @Descripttion: 入口文件
  * @Date: 2022-07-13 16:08:45
- * @LastEditTime: 2022-07-14 13:33:27
+ * @LastEditTime: 2022-07-14 15:17:00
  */
 const express = require('express');
 const app = express()
 const joi = require('joi')
-
-const HOSTNAME = '127.0.0.1'
-const PORT = 3007
+const { port, hostName } = require('./config')
 
 const cors = require('cors');
 app.use(cors())
@@ -31,18 +29,30 @@ app.use((req, res, next) => {
     next()
 })
 
+// 一定要在路由之前配置解析 Token 的中间件
+const expressJWT = require('express-jwt')
+const config = require('./config')
+
+app.use(expressJWT({secret: config.jwtSecretKey})
+    .unless({path: [/^\/api/]}))
+
 // 导入并使用用户模块
 const userRouter = require('./router/user')
 app.use('/api', userRouter)
+// 导入并使用用户信息的路由模块
+const userinfoRouter = require('./router/userinfo.js')
+app.use('/my',userinfoRouter)
 
 // 定义错误级别的中间件
 app.use((err, req, res, next) => {
     // 验证失败导致的错误
     if (err instanceof joi.ValidationError) return res.cc(err)
+    // 身份认证失败后的错误
+    if(err.name === 'UnauthorizedError') return res.cc('身份认证失败！')
     // 未知的错误
     res.cc(err)
 })
 
-app.listen(PORT, () => {
-    console.log(`api server running at http://${HOSTNAME}:${PORT}`);
+app.listen(port, () => {
+    console.log(`api server running at http://${hostName}:${port}`);
 })

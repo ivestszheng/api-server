@@ -1,7 +1,7 @@
 /*
  * @Descripttion: 处理函数 - 用户
  * @Date: 2022-07-13 16:35:26
- * @LastEditTime: 2022-07-14 14:41:23
+ * @LastEditTime: 2022-07-15 09:53:23
  */
 const db = require('../db/index')
 const bcrypt = require('bcryptjs');
@@ -76,7 +76,6 @@ exports.login = (req, res) => {
             status: 0,
             message: '登录成功！',
             token: `Bearer ${tokenStr}`
-
         })
     })
 }

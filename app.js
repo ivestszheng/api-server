@@ -33,6 +33,7 @@ app.use((req, res, next) => {
 const expressJWT = require('express-jwt')
 const config = require('./config')
 
+// Token 解析成功，express-jwt 中间件会帮 req 挂载上 user 对象
 app.use(expressJWT({secret: config.jwtSecretKey})
     .unless({path: [/^\/api/]}))
 

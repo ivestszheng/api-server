@@ -1,7 +1,8 @@
+// @ts-nocheck
 /*
  * @Descripttion: 用户信息校验模块
  * @Date: 2022-07-14 13:10:47
- * @LastEditTime: 2022-07-14 16:26:30
+ * @LastEditTime: 2022-07-15 10:20:24
  */
 // 导入定义验证规则的包
 const joi = require('joi')
@@ -29,5 +30,19 @@ exports.update_userinfo_schema = {
         id,
         nickname,
         email
+    }
+}
+
+exports.update_password_schema = {
+    body: {
+        oldPwd: password,
+        newPwd: joi.not(joi.ref('oldPwd')).concat(password)
+    }
+}
+
+const avatar = joi.string().dataUri().required()
+exports.update_avatar_schema = {
+    body: {
+        avatar
     }
 }

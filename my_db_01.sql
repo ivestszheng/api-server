@@ -11,7 +11,7 @@
  Target Server Version : 50731
  File Encoding         : 65001
 
- Date: 15/07/2022 14:09:50
+ Date: 15/07/2022 15:39:07
 */
 
 SET NAMES utf8mb4;
@@ -27,13 +27,35 @@ CREATE TABLE `ev_article_cate`  (
   `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `is_delete` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ev_article_cate
 -- ----------------------------
 INSERT INTO `ev_article_cate` VALUES (1, '科技', 'KeJi', 0);
 INSERT INTO `ev_article_cate` VALUES (2, '历史', 'LiShi', 0);
+INSERT INTO `ev_article_cate` VALUES (3, '新闻', 'XinWen', 1);
+
+-- ----------------------------
+-- Table structure for ev_articles
+-- ----------------------------
+DROP TABLE IF EXISTS `ev_articles`;
+CREATE TABLE `ev_articles`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `content` text CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `cover_img` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `pub_date` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `state` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `is_delete` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0-存在，1-删除',
+  `cate_id` int(11) NOT NULL,
+  `author_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of ev_articles
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for ev_users

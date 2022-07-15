@@ -2,7 +2,7 @@
 /*
  * @Descripttion: 入口文件
  * @Date: 2022-07-13 16:08:45
- * @LastEditTime: 2022-07-14 15:17:00
+ * @LastEditTime: 2022-07-15 15:18:24
  */
 const express = require('express');
 const app = express()
@@ -41,8 +41,12 @@ app.use(expressJWT({secret: config.jwtSecretKey})
 const userRouter = require('./router/user')
 app.use('/api', userRouter)
 // 导入并使用用户信息的路由模块
-const userinfoRouter = require('./router/userinfo.js')
+const userinfoRouter = require('./router/userinfo')
 app.use('/my',userinfoRouter)
+const artcateRouter = require('./router/artcate')
+app.use('/my/article',artcateRouter)
+const articleRouter = require('./router/article')
+app.use('/my/article',articleRouter)
 
 // 定义错误级别的中间件
 app.use((err, req, res, next) => {
